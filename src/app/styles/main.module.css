@@ -1,0 +1,23 @@
+.searchInput {
+    outline: none;
+}
+
+@media (max-width:700px) {
+    .searchInput {
+        width: 250px;
+    }
+}
+
+@media (min-width:1000px) {
+    .searchInput {
+        width: 500px;
+    }
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.card:hover {
+    background-color: #202020;
+}

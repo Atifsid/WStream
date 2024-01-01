@@ -1,0 +1,28 @@
+.streamCatch {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    margin-block: 0px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: var(--font-family, CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, var(--fallback-fonts, sans-serif));
+    color: inherit;
+}
+
+@media (max-width:700px) {
+    .streamCatch {
+        font-size: smaller;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
+
+@media (min-width:1000px) {
+    .streamCatch {
+        font-size: x-large;
+    }
+}
+
+.wStream {
+    color: #ADFF2F;
+}
