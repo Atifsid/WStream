@@ -5,11 +5,12 @@ import styles from '../../styles/main.module.css'
 import { useEffect, useState } from "react";
 import providers from "@/app/utils/Fetcher";
 import Header from "@/app/components/header";
-import { search } from "@/app/services/route";
+import multiSearch from "@/app/services/search";
 import { SearchResponse } from "@/app/types/SearchResponse";
 import Card from "@/app/components/Card";
 import useDebounce from "@/app/utils/useDebounce";
 import Loading from "@/app/components/loading";
+import Link from "next/link";
 
 export default function Search() {
     const [isLoading, setLoading] = useState(false)
@@ -17,22 +18,10 @@ export default function Search() {
     const debouncedSearch = useDebounce(searchText, 500)
     const [res, setRes] = useState<SearchResponse>()
 
-    const test = () => {
-        const output = providers.runAll({
-            media: {
-                type: 'movie',
-                title: "Yeh Jawaani Hai Deewani",
-                releaseYear: 2013,
-                tmdbId: "185008"
-            }
-        }).then((res) => console.log(res))
-            .catch(err => console.log(err))
-    }
-
     useEffect(() => {
         if (debouncedSearch) {
             setLoading(true)
-            search(debouncedSearch)
+            multiSearch(debouncedSearch, 1)
                 .then(res => {
                     setRes(res)
                     setLoading(false)
@@ -62,8 +51,12 @@ export default function Search() {
                     />
                 </div>
                 {!isLoading && res && <div className="grid grid-cols-4 gap-4 py-2">
-                    {res.results.map(item => {
-                        return (<Card {...item} />)
+                    {res.results.map((item) => {
+                        return (
+                            <Link href={`/watch/${item.media_type}/${item.id}`}>
+                                <Card {...item} />
+                            </Link>
+                        )
                     })}
                 </div>}
 

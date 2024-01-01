@@ -38,7 +38,10 @@ const Card: React.FC<Result> = (res) => {
                     height={300}
                     width={200}
                     alt={'thumbnail'} />
-                <h2 className={`font-sans text-xl tracking-wide break-normal w-40 py-2`}>{res.name ? res.name : ''}</h2>
+                {res.title ?
+                    <h2 className={`font-sans text-xl tracking-wide break-normal w-40 py-2`}>{res.title}</h2> :
+                    <h2 className={`font-sans text-xl tracking-wide break-normal w-40 py-2`}>{res.name}</h2>
+                }
                 <div>
                     <div className='flex items-center '>
                         <FaStar color={'yellow'} />
@@ -46,7 +49,7 @@ const Card: React.FC<Result> = (res) => {
                     </div>
                     <div className='flex items-center '>
                         <FaCalendarDay color={'#7CB9E8'} />
-                        <div className='mx-1'>{getAirYear(res.first_air_date)}</div>
+                        <div className='mx-1'>{res.first_air_date ? getAirYear(res.first_air_date) : ''}</div>
                     </div>
                 </div>
             </div>
