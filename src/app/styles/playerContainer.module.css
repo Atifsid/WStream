@@ -1,0 +1,13 @@
+.playerWrapper {
+    position: relative;
+}
+
+.reactPlayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.reactPlayer>div {
+    position: absolute;
+}

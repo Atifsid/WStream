@@ -1,4 +1,5 @@
 "use client"
+import Player from "@/app/components/VideoPlayer"
 import getById from "@/app/services/getById"
 import { FetchDetails } from "@/app/types/FetchDetails"
 import providers from "@/app/utils/Fetcher"
@@ -54,11 +55,11 @@ export default function Watch({ params }: { params: { slug: string[] } }) {
     }, [data, type])
 
     return (
-        <main className="relative h-screen overflow-hidden">
-            <video
-                autoPlay={true}>
-                {fileBasedStream && <source src={fileBasedStream.qualities[360]?.url} />}
-            </video>
+        <main >
+            {output && output.stream.type === 'file' ?
+                <Player type={"file"} fileBasedStream={fileBasedStream} />
+                : <Player type={"hls"} hlsBasedStream={hlsBasedStream} />
+            }
         </main>
     )
 }
