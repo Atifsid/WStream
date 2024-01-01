@@ -53,7 +53,9 @@ export default function Search() {
                 {!isLoading && res && <div className="grid grid-cols-4 gap-4 py-2">
                     {res.results.map((item) => {
                         return (
-                            <Link href={`/watch/${item.media_type}/${item.id}`}>
+                            <Link
+                                key={item.id}
+                                href={`/watch/${item.media_type}/${item.id}`}>
                                 <Card {...item} />
                             </Link>
                         )
