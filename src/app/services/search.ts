@@ -1,5 +1,5 @@
 import { TMDB_API_READ_ACCESS_TOKEN } from "@/config/tmdb";
-import { SearchResponse } from "../types/SearchResponse";
+import { SearchResponse } from "../api/models/SearchResponse";
 import defaultFetcher from "../api/apiClient";
 
 const multiSearch = async (query: string, page: number = 1) => {

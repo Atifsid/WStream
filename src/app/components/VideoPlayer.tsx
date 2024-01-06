@@ -7,34 +7,11 @@ import { TrackProps } from 'react-player/file';
 function Player({ type, hlsBasedStream, fileBasedStream }: PlayerProps) {
     const [captions_arr, setCaptions] = useState<TrackProps[]>([]);
 
-    // useEffect(() => {
-    //     let common;
-    //     if (type === 'file') {
-    //         common = fileBasedStream
-    //     } else {
-    //         common = hlsBasedStream
-    //     }
-    //     let arr = [...captions_arr]
-    //     common?.captions.forEach((x, index) => {
-    //         arr.push({
-    //             kind: 'subtitles',
-    //             src: x.url,
-    //             srcLang: x.language,
-    //             label: `test-${index}`
-    //         })
-    //     })
-    //     setCaptions(arr);
-    // }, [])
-
-    // useEffect(() => {
-    //     console.log(captions_arr);
-    // }, [captions_arr])
-
     return (
         <div>
             <ReactPlayer
                 url={type === 'file' ? fileBasedStream?.qualities[360]?.url : hlsBasedStream?.playlist}
-                // url={'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}
+                // url={'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'}
                 controls={true}
                 light={false}
                 pip={true}

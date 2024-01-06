@@ -4,7 +4,7 @@ import styles from '../styles/main.module.css'
 import { FaStar } from "react-icons/fa6";
 import { TMDB_IMAGE_BASE_URL } from '@/config/tmdb';
 import { FaCalendarDay } from "react-icons/fa6";
-import { Result } from '../types/SearchResponse';
+import { Result } from '../api/models/SearchResponse';
 
 const Card: React.FC<Result> = (res) => {
     const fallbackSrc = '/static/no_icon.png'

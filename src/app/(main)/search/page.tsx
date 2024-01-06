@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import providers from "@/app/utils/Fetcher";
 import Header from "@/app/components/header";
 import multiSearch from "@/app/services/search";
-import { SearchResponse } from "@/app/types/SearchResponse";
+import { SearchResponse } from "@/app/api/models/SearchResponse";
 import Card from "@/app/components/Card";
 import useDebounce from "@/app/utils/useDebounce";
 import Loading from "@/app/components/loading";

@@ -1,6 +1,6 @@
 import { Episode } from "./Providers"
 
-export interface TvDetails {
+export interface EpisodeDetails {
     _id?: string
     air_date?: string
     episodes?: Episode[]
