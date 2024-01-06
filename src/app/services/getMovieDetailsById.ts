@@ -1,10 +1,10 @@
 import { TMDB_API_READ_ACCESS_TOKEN } from "@/config/tmdb";
 import defaultFetcher from "../api/apiClient";
-import { FetchDetails } from "../types/FetchDetails";
+import { MovieDetails } from "../types/MovieDetails";
 
-const getById = async (type: string, id: string) => {
+const getMovieDetailsById = async (type: string, id: string) => {
     try {
-        const result = await defaultFetcher<FetchDetails>(`/3/${type}/${id}`,
+        const result = await defaultFetcher<MovieDetails>(`/3/${type}/${id}`,
             {
                 append_to_response: 'external_ids'
             },
@@ -18,8 +18,8 @@ const getById = async (type: string, id: string) => {
         );
         return result;
     } catch (error) {
-        console.error('Error getById:', error);
+        console.error('Error getMovieDetailsById:', error);
     }
 }
 
-export default getById;
+export default getMovieDetailsById;
