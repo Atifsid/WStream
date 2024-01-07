@@ -26,7 +26,7 @@ export default function Search() {
                     setRes(res)
                     setLoading(false)
                 })
-                .catch(err => console.log(err))
+                .catch(err => { })
         }
 
         if (debouncedSearch === '') {
@@ -42,6 +42,7 @@ export default function Search() {
                 <div className={`flex items-center bg-cyan-900 gap-4 rounded-3xl p-2 px-4`}>
                     <FaMagnifyingGlass />
                     <input
+                        autoComplete="off"
                         className={`bg-transparent px-2 py-1 ${styles.searchInput}`}
                         placeholder="I'm lookin' for ..."
                         type="text"
