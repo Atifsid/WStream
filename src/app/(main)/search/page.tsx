@@ -51,7 +51,7 @@ export default function Search() {
                         onChange={(e) => setSearchText(e.target.value)}
                     />
                 </div>
-                {!isLoading && res && <div className="grid grid-cols-4 gap-4 py-2">
+                {!isLoading && res && <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-md md:max-w-6xl mx-auto py-2">
                     {res.results.map((item) => {
                         return (
                             <Link

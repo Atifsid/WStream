@@ -22,15 +22,18 @@ function Player({ type, hlsBasedStream, fileBasedStream }: PlayerProps) {
     }, [])
 
     return (
-        <div className={styles.playerWrapper}>
-            <ReactPlayer
-                className={styles.player}
-                url={type === "hls" ? hlsBasedStream?.playlist : fileBasedStream?.qualities[360]?.url}
-                controls={true}
-                pip={true}
-                width="100%"
-                height="100%"
-            />
+        <div className={styles.videoContainer}>
+            <div className={styles.playerWrapper}>
+                <ReactPlayer
+                    className={` h-screen ${styles.player}`}
+                    url={type === "hls" ? hlsBasedStream?.playlist : fileBasedStream?.qualities[720]?.url}
+                    controls={true}
+                    playing={true}
+                    pip={true}
+                    width={'100%'}
+                    height={'100%'}
+                />
+            </div>
         </div>
     )
 }
