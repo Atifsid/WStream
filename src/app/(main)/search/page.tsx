@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import providers from "@/app/utils/Fetcher";
 import Header from "@/app/components/header";
 import multiSearch from "@/app/services/search";
-import { SearchResponse } from "@/app/types/SearchResponse";
+import { SearchResponse } from "@/app/api/models/SearchResponse";
 import Card from "@/app/components/Card";
 import useDebounce from "@/app/utils/useDebounce";
 import Loading from "@/app/components/loading";
@@ -26,7 +26,7 @@ export default function Search() {
                     setRes(res)
                     setLoading(false)
                 })
-                .catch(err => console.log(err))
+                .catch(err => { })
         }
 
         if (debouncedSearch === '') {
@@ -42,6 +42,7 @@ export default function Search() {
                 <div className={`flex items-center bg-cyan-900 gap-4 rounded-3xl p-2 px-4`}>
                     <FaMagnifyingGlass />
                     <input
+                        autoComplete="off"
                         className={`bg-transparent px-2 py-1 ${styles.searchInput}`}
                         placeholder="I'm lookin' for ..."
                         type="text"
@@ -50,7 +51,7 @@ export default function Search() {
                         onChange={(e) => setSearchText(e.target.value)}
                     />
                 </div>
-                {!isLoading && res && <div className="grid grid-cols-4 gap-4 py-2">
+                {!isLoading && res && <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-md md:max-w-6xl mx-auto py-2">
                     {res.results.map((item) => {
                         return (
                             <Link
