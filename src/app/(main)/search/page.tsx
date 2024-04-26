@@ -1,72 +1,65 @@
-"use client"
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { Inter } from 'next/font/google'
-import styles from '../../styles/main.module.css'
-import { useEffect, useState } from "react";
-import providers from "@/app/utils/Fetcher";
+"use client";
+import styles from "../../styles/main.module.css";
+import { Suspense, useEffect, useState } from "react";
 import Header from "@/app/components/header";
 import multiSearch from "@/app/services/search";
 import { SearchResponse } from "@/app/api/models/SearchResponse";
-import Card from "@/app/components/Card";
 import useDebounce from "@/app/utils/useDebounce";
 import Loading from "@/app/components/loading";
-import Link from "next/link";
+import CustomSelect from "@/app/components/CustomSelect";
+import { types } from "@/app/lib/constants";
 
 export default function Search() {
-    const [isLoading, setLoading] = useState(false)
-    const [searchText, setSearchText] = useState('')
-    const debouncedSearch = useDebounce(searchText, 500)
-    const [res, setRes] = useState<SearchResponse>()
+  const [isLoading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const debouncedSearch = useDebounce(searchText, 500);
+  const [res, setRes] = useState<SearchResponse>();
+  const [queryParams, setQueryParams] = useState(null);
 
-    useEffect(() => {
-        if (debouncedSearch) {
-            setLoading(true)
-            multiSearch(debouncedSearch, 1)
-                .then(res => {
-                    setRes(res)
-                    setLoading(false)
-                })
-                .catch(err => { })
-        }
+  useEffect(() => {
+    if (debouncedSearch) {
+      setLoading(true);
+      multiSearch(debouncedSearch, 1)
+        .then((res) => {
+          setRes(res);
+          setLoading(false);
+        })
+        .catch((err) => {});
+    }
 
-        if (debouncedSearch === '') {
-            setRes(undefined)
-        }
+    if (debouncedSearch === "") {
+      setRes(undefined);
+    }
+  }, [debouncedSearch]);
 
-    }, [debouncedSearch])
+  return (
+    <main>
+      <Header />
+      <div className="flex flex-col items-center justify-between p-10">
+        <div
+          className={`flex items-center justify-between bg-cyan-900 gap-4 rounded-3xl p-2 px-4 w-1/3`}
+        >
+          <input
+            disabled={!queryParams}
+            autoComplete="off"
+            className={`bg-transparent px-2 py-1 ${styles.searchInput} ${
+              !queryParams && "cursor-not-allowed"
+            }`}
+            placeholder={`${
+              queryParams ? "Search ..." : "Please Select a type first ->"
+            }`}
+            type="text"
+            name="name"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <CustomSelect info={types} setQueryParams={setQueryParams} />
+        </div>
 
-    return (
-        <main>
-            <Header />
-            <div className="flex flex-col items-center justify-between p-10">
-                <div className={`flex items-center bg-cyan-900 gap-4 rounded-3xl p-2 px-4`}>
-                    <FaMagnifyingGlass />
-                    <input
-                        autoComplete="off"
-                        className={`bg-transparent px-2 py-1 ${styles.searchInput}`}
-                        placeholder="I'm lookin' for ..."
-                        type="text"
-                        name="name"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                    />
-                </div>
-                {!isLoading && res && <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-md md:max-w-6xl mx-auto py-2">
-                    {res.results.map((item) => {
-                        return (
-                            <Link
-                                key={item.id}
-                                href={`/watch/${item.media_type}/${item.id}`}>
-                                <Card {...item} />
-                            </Link>
-                        )
-                    })}
-                </div>}
-
-                {isLoading && <Loading />}
-
-                {!isLoading && res && res.results.length === 0 && <div>Nothing Found.</div>}
-            </div>
-        </main>
-    )
+        <Suspense key={JSON.stringify(queryParams)} fallback={<Loading />}>
+          {/* <SearchMain /> */}
+        </Suspense>
+      </div>
+    </main>
+  );
 }
