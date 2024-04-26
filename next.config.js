@@ -1,24 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    async redirects() {
-        return [
-            {
-                source: '/',
-                destination: '/search',
-                permanent: true,
-            },
-        ]
-    },
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'image.tmdb.org',
-                port: '',
-                pathname: '/t/p/**',
-            },
-        ],
-    },
-}
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/search",
+        permanent: true,
+      },
+    ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+        pathname: "**",
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

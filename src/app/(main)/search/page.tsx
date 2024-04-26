@@ -1,64 +1,46 @@
 "use client";
-import styles from "../../styles/main.module.css";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import Header from "@/app/components/header";
-import multiSearch from "@/app/services/search";
-import { SearchResponse } from "@/app/api/models/SearchResponse";
-import useDebounce from "@/app/utils/useDebounce";
 import Loading from "@/app/components/loading";
-import CustomSelect from "@/app/components/CustomSelect";
-import { types } from "@/app/lib/constants";
+import Button from "@/app/components/Button";
+import { search } from "@/app/services/search";
+import SearchMain from "@/app/ui/select/SearchMain";
 
 export default function Search() {
-  const [isLoading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const debouncedSearch = useDebounce(searchText, 500);
-  const [res, setRes] = useState<SearchResponse>();
-  const [queryParams, setQueryParams] = useState(null);
+  const [res, setRes] = useState(null);
 
-  useEffect(() => {
-    if (debouncedSearch) {
-      setLoading(true);
-      multiSearch(debouncedSearch, 1)
-        .then((res) => {
-          setRes(res);
-          setLoading(false);
-        })
-        .catch((err) => {});
-    }
-
-    if (debouncedSearch === "") {
-      setRes(undefined);
-    }
-  }, [debouncedSearch]);
+  const handleSearch = async () => {
+    setRes(await search(searchText, 1));
+  };
 
   return (
     <main>
       <Header />
       <div className="flex flex-col items-center justify-between p-10">
         <div
-          className={`flex items-center justify-between bg-cyan-900 gap-4 rounded-3xl p-2 px-4 w-1/3`}
+          className={`flex items-center justify-between bg-cyan-900 gap-4 rounded-2xl p-2 px-3 w-1/3`}
         >
           <input
-            disabled={!queryParams}
             autoComplete="off"
-            className={`bg-transparent px-2 py-1 ${styles.searchInput} ${
-              !queryParams && "cursor-not-allowed"
-            }`}
-            placeholder={`${
-              queryParams ? "Search ..." : "Please Select a type first ->"
-            }`}
+            className="bg-transparent outline-none px-2 py-1 w-4/5"
+            placeholder="I'm looking for ..."
             type="text"
             name="name"
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) => {
+              e.target.value && setSearchText("");
+              setSearchText(e.target.value);
+            }}
           />
-          <CustomSelect info={types} setQueryParams={setQueryParams} />
+          <Button
+            click={handleSearch}
+            text={"Search"}
+            disabled={searchText == ""}
+          />
         </div>
 
-        <Suspense key={JSON.stringify(queryParams)} fallback={<Loading />}>
-          {/* <SearchMain /> */}
-        </Suspense>
+        <Suspense fallback={<Loading />}>{<SearchMain data={res} />}</Suspense>
       </div>
     </main>
   );
