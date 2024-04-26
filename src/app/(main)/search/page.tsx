@@ -1,72 +1,47 @@
-"use client"
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { Inter } from 'next/font/google'
-import styles from '../../styles/main.module.css'
-import { useEffect, useState } from "react";
-import providers from "@/app/utils/Fetcher";
+"use client";
+import { Suspense, useState } from "react";
 import Header from "@/app/components/header";
-import multiSearch from "@/app/services/search";
-import { SearchResponse } from "@/app/api/models/SearchResponse";
-import Card from "@/app/components/Card";
-import useDebounce from "@/app/utils/useDebounce";
 import Loading from "@/app/components/loading";
-import Link from "next/link";
+import Button from "@/app/components/Button";
+import { search } from "@/app/services/search";
+import SearchMain from "@/app/ui/select/SearchMain";
 
 export default function Search() {
-    const [isLoading, setLoading] = useState(false)
-    const [searchText, setSearchText] = useState('')
-    const debouncedSearch = useDebounce(searchText, 500)
-    const [res, setRes] = useState<SearchResponse>()
+  const [searchText, setSearchText] = useState("");
+  const [res, setRes] = useState(null);
 
-    useEffect(() => {
-        if (debouncedSearch) {
-            setLoading(true)
-            multiSearch(debouncedSearch, 1)
-                .then(res => {
-                    setRes(res)
-                    setLoading(false)
-                })
-                .catch(err => { })
-        }
+  const handleSearch = async () => {
+    setRes(await search(searchText, 1));
+  };
 
-        if (debouncedSearch === '') {
-            setRes(undefined)
-        }
+  return (
+    <main>
+      <Header />
+      <div className="flex flex-col items-center justify-between p-10">
+        <div
+          className={`flex items-center justify-between bg-cyan-900 gap-4 rounded-2xl p-2 px-3 w-1/3`}
+        >
+          <input
+            autoComplete="off"
+            className="bg-transparent outline-none px-2 py-1 w-4/5"
+            placeholder="I'm looking for ..."
+            type="text"
+            name="name"
+            value={searchText}
+            onChange={(e) => {
+              e.target.value && setSearchText("");
+              setSearchText(e.target.value);
+            }}
+          />
+          <Button
+            click={handleSearch}
+            text={"Search"}
+            disabled={searchText == ""}
+          />
+        </div>
 
-    }, [debouncedSearch])
-
-    return (
-        <main>
-            <Header />
-            <div className="flex flex-col items-center justify-between p-10">
-                <div className={`flex items-center bg-cyan-900 gap-4 rounded-3xl p-2 px-4`}>
-                    <FaMagnifyingGlass />
-                    <input
-                        autoComplete="off"
-                        className={`bg-transparent px-2 py-1 ${styles.searchInput}`}
-                        placeholder="I'm lookin' for ..."
-                        type="text"
-                        name="name"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                    />
-                </div>
-                {!isLoading && res && <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-md md:max-w-6xl mx-auto py-2">
-                    {res.results.map((item) => {
-                        return (
-                            <Link
-                                key={item.id}
-                                href={`/watch/${item.media_type}/${item.id}`}>
-                                <Card {...item} />
-                            </Link>
-                        )
-                    })}
-                </div>}
-
-                {isLoading && <Loading />}
-
-                {!isLoading && res && res.results.length === 0 && <div>Nothing Found.</div>}
-            </div>
-        </main>
-    )
+        <Suspense fallback={<Loading />}>{<SearchMain data={res} />}</Suspense>
+      </div>
+    </main>
+  );
 }
